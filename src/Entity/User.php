@@ -38,7 +38,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180)
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="Merci d'entrer un e-mail")
      */
     private $username;
 
@@ -54,6 +54,11 @@ class User implements UserInterface
      * @Assert\Length(min=8,minMessage="votre mot de passe doit faire au minimun 8 caractéres !")
      */
     private $password;
+
+    /**
+     * @ORM\Column(type="string", length=180, nullable=true)
+     */
+    private $reset_token;
 
     public function getId(): ?int
     {
@@ -133,5 +138,17 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getResetToken(): ?string
+    {
+        return $this->reset_token;
+    }
+
+    public function setResetToken(?string $reset_token): self
+    {
+        $this->reset_token = $reset_token;
+
+        return $this;
     }
 }

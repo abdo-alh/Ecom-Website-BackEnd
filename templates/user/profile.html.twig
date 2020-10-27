@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <h1>Edit the User! ?</h1>
+    {{ form_start(formProfile) }}
+        {{ form_row(formProfile.email) }}
+        {{ form_row(formProfile.username) }}
+        <button type="submit" class="btn btn-primary">Update!</button>
+    {{ form_end(formProfile) }}
+    {% if app.user %}
+        <div class="mb-3">
+             <a href="{{ path('reset_password') }}">Reset Password</a>
+        </div>
+    {% endif %}
+{% endblock %}

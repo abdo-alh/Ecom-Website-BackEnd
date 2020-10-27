@@ -34,13 +34,17 @@
                     <input class="form-control" name="_password" placeholder="*******"
                     required type="password">
                   </div>
+                  <div class="input-group mb-4">
+                     <input type="checkbox" id="remember_me" name="_remember_me" checked/>
+                     <label for="remember_me">Keep me logged in</label>
+                  </div>
                   <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                   <div class="row">
                     <div class="col-6">
                       <button type="submit" class="btn btn-primary px-4">Connecter</button>
                     </div>
                     <div class="col-6 text-right">
-                      <button type="button" class="btn btn-link px-0">Mot de passe oublié?</button>
+                      <a href="{{ path('forgot_password') }}"><button type="button" class="btn btn-link px-0">Mot de passe oublié?</button></a>
                     </div>
                   </div>
                 </form>

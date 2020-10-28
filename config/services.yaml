@@ -32,3 +32,10 @@ services:
 
     App\Security\TokenBasedRememberMeServices:
         decorates: 'security.authentication.rememberme.services.simplehash'
+
+    my.oauth_aware.user_provider.service:
+        class: App\Security\MyEntityUserProvider
+        arguments:
+            - '@doctrine'
+            - 'App\Entity\User'
+            - {facebook: facebookID}

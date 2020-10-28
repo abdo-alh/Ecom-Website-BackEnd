@@ -27,7 +27,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/register", name="register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, \Swift_Mailer $mailer)
     {
         $user = new User();
         $form = $this->createForm(RegistrationType::class, $user);
@@ -41,9 +41,30 @@ class SecurityController extends AbstractController
                     $user->getPassword()
                 )
             );
+            // On génère un token et on l'enregistre
+            $user->setActivationToken(md5(uniqid()));
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
+
+            // do anything else you need here, like send an email
+            // On crée le message
+            $message = (new \Swift_Message('Nouveau compte'))
+                // On attribue l'expéditeur
+                ->setFrom('votre@adresse.fr')
+                // On attribue le destinataire
+                ->setTo($user->getEmail())
+                // On crée le texte avec la vue
+                ->setBody(
+                    $this->renderView(
+                        'emails/activation.html.twig',
+                        ['token' => $user->getActivationToken()]
+                    ),
+                    'text/html'
+                );
+            $mailer->send($message);
+
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('security/register.html.twig', [
@@ -87,8 +108,35 @@ class SecurityController extends AbstractController
         }
         return $this->render('user/profile.html.twig', [
             'formProfile' => $form->createView(),
-            'user'=>$user
+            'user' => $user
         ]);
+    }
+
+    /**
+     * @Route("/activation/{token}", name="activation")
+     */
+    public function activation($token, UserRepository $users)
+    {
+        // On recherche si un utilisateur avec ce token existe dans la base de données
+        $user = $users->findOneBy(['activation_token' => $token]);
+
+        // Si aucun utilisateur n'est associé à ce token
+        if (!$user) {
+            // On renvoie une erreur 404
+            throw $this->createNotFoundException('Cet utilisateur n\'existe pas');
+        }
+
+        // On supprime le token
+        $user->setActivationToken(null);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        // On génère un message
+        $this->addFlash('message', 'Utilisateur activé avec succès');
+
+        // On retourne à l'accueil
+        return $this->redirectToRoute('home');
     }
 
     /**

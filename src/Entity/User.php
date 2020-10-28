@@ -32,13 +32,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="Merci d'entrer un e-mail")
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=180)
-     * @Assert\NotBlank(message="Merci d'entrer un e-mail")
+     * @Assert\NotBlank(message="Merci d'entrer un username")
      */
     private $username;
 
@@ -49,8 +49,7 @@ class User implements UserInterface
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank
+     * @ORM\Column(type="string", nullable=true)
      * @Assert\Length(min=8,minMessage="votre mot de passe doit faire au minimun 8 caractéres !")
      */
     private $password;
@@ -59,6 +58,21 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=180, nullable=true)
      */
     private $reset_token;
+
+    /**
+     * @ORM\Column(type="string", length=160, nullable=true)
+     */
+    private $activation_token;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $facebookID;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $facebookAccessToken;
 
     public function getId(): ?int
     {
@@ -136,8 +150,7 @@ class User implements UserInterface
      */
     public function eraseCredentials()
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        return null;
     }
 
     public function getResetToken(): ?string
@@ -150,5 +163,49 @@ class User implements UserInterface
         $this->reset_token = $reset_token;
 
         return $this;
+    }
+
+    public function getActivationToken(): ?string
+    {
+        return $this->activation_token;
+    }
+
+    public function setActivationToken(?string $activation_token): self
+    {
+        $this->activation_token = $activation_token;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFacebookID()
+    {
+        return $this->facebookID;
+    }
+
+    /**
+     * @param mixed $facebookID
+     */
+    public function setFacebookID($facebookID): void
+    {
+        $this->facebookID = $facebookID;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFacebookAccessToken()
+    {
+        return $this->facebookAccessToken;
+    }
+
+    /**
+     * @param mixed $facebookAccessToken
+     */
+    public function setFacebookAccessToken($facebookAccessToken): void
+    {
+        $this->facebookAccessToken = $facebookAccessToken;
     }
 }

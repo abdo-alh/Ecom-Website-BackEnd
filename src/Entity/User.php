@@ -49,10 +49,11 @@ class User implements UserInterface
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", length=180)
+     * @Assert\NotBlank(message="Merci d'entrer le mot de passe")
      * @Assert\Length(min=8,minMessage="votre mot de passe doit faire au minimun 8 caractéres !")
      */
-    private $password;
+    private $password='';
 
     /**
      * @ORM\Column(type="string", length=180, nullable=true)
@@ -207,5 +208,31 @@ class User implements UserInterface
     public function setFacebookAccessToken($facebookAccessToken): void
     {
         $this->facebookAccessToken = $facebookAccessToken;
+    }
+
+    public function useOauth(): bool
+    {
+        return null !== $this->facebookID;
+    }
+
+    public function serialize(): string
+    {
+        return serialize([
+            $this->id,
+            $this->username,
+            $this->password,
+        ]);
+    }
+
+    /**
+     * @param string $serialized
+     */
+    public function unserialize($serialized): void
+    {
+        [
+            $this->id,
+            $this->username,
+            $this->password,
+        ] = unserialize($serialized);
     }
 }

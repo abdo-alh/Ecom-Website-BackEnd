@@ -215,4 +215,24 @@ class Product
 
         return $this;
     }
+
+    public function serialize(): string
+    {
+        return serialize([
+            'id'=>$this->id,
+            'name'=>$this->name,
+            'description'=>$this->description
+        ]);
+    }
+
+    /**
+     * @param string $serialized
+     */
+    public function unserialize($serialized): void
+    {
+        [
+            $this->id,
+            $this->name,
+        ] = unserialize($serialized);
+    }
 }

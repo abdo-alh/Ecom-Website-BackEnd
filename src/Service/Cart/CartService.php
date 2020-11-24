@@ -66,6 +66,10 @@ class CartService
             ];
         }
 
+        if(empty($panierWithData)){
+            return [];
+        }
+
         return $panierWithData;
     }
 
@@ -79,6 +83,10 @@ class CartService
                 'product' => $this->productRepository->find($id),
                 'quantity' => $quantity
             ];
+        }
+
+        if(empty($panierWithData)){
+            return [];
         }
 
         return $panierWithData;

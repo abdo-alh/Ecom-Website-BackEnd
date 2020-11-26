@@ -13,7 +13,7 @@
                 let total = 0;
                 for (let i = 0; i < data.length; i++) {
                     let product = JSON.parse(data[i].product);
-                    html += '<li><a class="remove" title="remove this item" href="javascript:void(0);"><i class="fa fa-remove"></i></a><a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#"></a><h4><a href="#">' + product.name + '</a></h4><p class="quantity">' + data[i].quantity + 'x -<span class="amount">' + product.price + '$</span></p></li>';
+                    html += '<li id="li-' + (i + 1) + '"><a class="remove" title="remove this item" href="javascript:void(0);"><i class="fa fa-remove"></i></a><a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#"></a><h4><a href="#">' + product.name + '</a></h4><p class="quantity">' + data[i].quantity + 'x -<span class="amount">' + product.price + '$</span></p></li>';
                     total += product.price * data[i].quantity;
                     count += data[i].quantity;
                 }
@@ -89,6 +89,37 @@
         //     });
         // });
 
+        $('.remove').on('click', function (e) {
+            e.preventDefault();
+
+            if (confirm("Are you sure?")) {
+                var url = $(this).data('url');
+                var id = $(this).attr('data-id');
+                var trCart = $('#tr-' + id);
+                var liCart = $('#li-' + id);
+                var subTotal = $('.subtotal');
+                var total = $('.last .total');
+                var totalAmount = $('.total .total-amount');
+
+                $.ajax({
+                    url: url,
+                    type: 'DELETE'
+                })
+                    .done(function (data) {
+                        trCart.remove();
+                        liCart.remove();
+                        subTotal.html(data);
+                        total.html(subTotal.html());
+                        totalAmount.html('$'+subTotal.html());
+                        $('.shopping .total-count').html($('.shopping .total-count').html()-1);
+                    })
+                    .fail(function (error) {
+                        console.log(error);
+                    });
+            }
+
+        });
+
         $('.cart_add').on('click', function (e) {
 
             e.preventDefault();
@@ -106,10 +137,10 @@
                     let total = 0;
                     for (let i = 0; i < data.length; i++) {
                         let product = JSON.parse(data[i].product);
-                        html += '<li><a class="remove" title="remove this item" href="javascript:void(0);"><i class="fa fa-remove"></i></a><a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#"></a><h4><a href="#">' + product.name + '</a></h4><p class="quantity">' + data[i].quantity + 'x -<span class="amount">' + product.price + '$</span></p></li>';
+                        html += '<li id="li-' + (i + 1) + '"><a class="remove" title="remove this item" href="javascript:void(0);"><i class="fa fa-remove"></i></a><a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#"></a><h4><a href="#">' + product.name + '</a></h4><p class="quantity">' + data[i].quantity + 'x -<span class="amount">' + product.price + '$</span></p></li>';
                         $('.shopping-list').html(html);
                         total += product.price * data[i].quantity;
-                        count++;
+                        count += data[i].quantity;
                     }
                     $('.total-amount').html('$' + total);
                     $('.total-count').html(count);
@@ -123,16 +154,16 @@
         });
 
         /* var allButtonsPlus = document.querySelectorAll('.plus .btn-number');
-
+    
         for (var i = 0; i < allButtonsPlus.length; i++) {
             allButtonsPlus[i].addEventListener('click', function (event) {
                 event.preventDefault();
                 console.log(allButtonsPlus[i]);
-
+    
                 var input = $('.qty .input-number');
                 var currentVal = parseInt(input.val());
                 if (!isNaN(currentVal)) {
-
+    
                     if (currentVal < 100) {
                         input.val(currentVal + 1).change();
                     }
@@ -153,11 +184,19 @@
             var type = $(this).attr('data-type');
             var input = $("input[name='" + fieldName + "']");
             var currentVal = parseInt(input.val());
+            var id = $(this).attr('data-id');
+            var unitPrice = $('#unit-' + id);
+            var totalPrice = $('#total-' + id);
+            var subTotal = $('.subtotal');
+            var total = $('.last .total');
             if (!isNaN(currentVal)) {
                 if (type == 'minus') {
 
                     if (currentVal > input.attr('data-min')) {
                         input.val(currentVal - 1).change();
+                        totalPrice.html(unitPrice.data('unit') * input.val());
+                        subTotal.html(parseInt(subTotal.html()) - unitPrice.data('unit'));
+                        total.html(subTotal.html());
                     }
                     if (parseInt(input.val()) == input.attr('data-min')) {
                         $(this).attr('disabled', true);
@@ -167,6 +206,9 @@
 
                     if (currentVal < input.attr('data-max')) {
                         input.val(currentVal + 1).change();
+                        totalPrice.html(unitPrice.data('unit') * input.val());
+                        subTotal.html(parseInt(subTotal.html()) + unitPrice.data('unit'));
+                        total.html(subTotal.html());
                     }
                     if (parseInt(input.val()) == input.attr('data-max')) {
                         $(this).attr('disabled', true);
@@ -186,10 +228,10 @@
             var name = $(this).attr('name');
             if (valueCurrent >= minValue) {
                 $(".btn-number[data-type='minus'][data-field='" + name + "']").removeAttr('disabled')
-            } 
+            }
             if (valueCurrent <= maxValue) {
                 $(".btn-number[data-type='plus'][data-field='" + name + "']").removeAttr('disabled')
-            } 
+            }
         });
         $(".input-number").keydown(function (e) {
             // Allow: backspace, delete, tab, escape, enter and .
@@ -204,6 +246,20 @@
             // Ensure that it is a number and stop the keypress
             if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
                 e.preventDefault();
+            }
+        });
+        $('#ship').on('change', function (e) {
+            e.preventDefault();
+            var freeShipping = $('.shipping');
+            var subTotal = $('.subtotal');
+            var total = $('.last .total');
+
+            if (this.checked === true) {
+                freeShipping.html('10$');
+                total.html(parseInt(subTotal.html()) + 10);
+            } else {
+                freeShipping.html('Free');
+                total.html(parseInt(subTotal.html()));
             }
         });
 

@@ -53,7 +53,8 @@ class CartController extends AbstractController
     public function remove($id, CartService $cartService): Response
     {
         $cartService->remove($id);
+        $total = $cartService->getTotal();
 
-        return $this->redirect('/cart');
+        return new JsonResponse($total);
     }
 }

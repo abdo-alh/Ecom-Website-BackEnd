@@ -50,7 +50,7 @@
 						<tbody>
 							{% for item in items %}
 
-								<tr>
+								<tr id="tr-{{ loop.index }}">
 									<td class="image" data-title="No"><img src="https://via.placeholder.com/100x100" alt="#"></td>
 									<td class="product-des" data-title="Description">
 										<p class="product-name">
@@ -59,7 +59,7 @@
 										<p class="product-des">{{ item.product.description }}</p>
 									</td>
 									<td class="price" data-title="Price">
-										<span>${{ item.product.price }}
+										<span id="unit-{{ loop.index }}" class="unit-price" data-unit="{{ item.product.price }}">${{ item.product.price }}
 										</span>
 									</td>
 									<td
@@ -67,13 +67,13 @@
 										<!-- Input Order -->
 										<div class="input-group">
 											<div class="button minus">
-												<button type="button" class="btn btn-primary btn-number"  data-type="minus" data-field="quant[{{ loop.index }}]">
+												<button type="button" class="btn btn-primary btn-number" data-type="minus" data-id="{{ loop.index }}" data-field="quant[{{ loop.index }}]">
 													<i class="ti-minus"></i>
 												</button>
 											</div>
-											<input type="text" name="quant[{{ loop.index }}]" class="input-number" data-min="1" data-max="100" value="{{ item.quantity }}">
+											<input type="text" name="quant[{{ loop.index }}]" class="input-number"  data-min="1" data-max="100" value="{{ item.quantity }}">
 											<div class="button plus">
-												<button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quant[{{ loop.index }}]">
+												<button type="button" class="btn btn-primary btn-number" data-type="plus" data-id="{{ loop.index }}" data-field="quant[{{ loop.index }}]">
 													<i class="ti-plus"></i>
 												</button>
 											</div>
@@ -81,10 +81,10 @@
 										<!--/ End Input Order -->
 									</td>
 									<td class="total-amount" data-title="Total">
-										<span>${{ item.product.price * item.quantity }}</span>
+										$<span id="total-{{ loop.index }}" class="total">{{ item.product.price * item.quantity }}</span>
 									</td>
 									<td class="action" data-title="Remove">
-										<a href="">
+										<a href="#" class="remove" data-id="{{ loop.index }}"  data-url="{{ path('cart_remove',{'id': item.product.id}) }}">
 											<i class="ti-trash remove-icon"></i>
 										</a>
 									</td>
@@ -111,7 +111,7 @@
 										</form>
 									</div>
 									<div class="checkbox">
-										<label class="checkbox-inline" for="2"><input name="news" id="2" type="checkbox">
+										<label class="checkbox-inline" for="ship"><input name="news" id="ship" type="checkbox">
 											Shipping (+10$)</label>
 									</div>
 								</div>
@@ -119,11 +119,11 @@
 							<div class="col-lg-4 col-md-7 col-12">
 								<div class="right">
 									<ul>
-										<li>Cart Subtotal<span>${{ total }}</span>
+										<li>Cart Subtotal<span>$</span><span class="subtotal">{{ total }}</span>
 										</li>
-										<li>Shipping<span>Free</span>
+										<li>Shipping<span class="shipping">Free</span>
 										</li>
-										<li class="last">You Pay<span>${{ total }}</span>
+										<li class="last">You Pay<span>$</span><span class="total">{{ total }}</span>
 										</li>
 									</ul>
 									<div class="button5">

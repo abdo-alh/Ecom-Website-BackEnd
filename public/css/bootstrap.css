@@ -4505,9 +4505,9 @@ tbody.collapse.show {
 
 .page-item.active .page-link {
     z-index: 2;
-    color: #fff;
-    background-color: #007bff;
-    border-color: #007bff
+    background: #F7941D;
+	color: #fff;
+	border-color: transparent;
 }
 
 .page-item.disabled .page-link {
@@ -4518,22 +4518,20 @@ tbody.collapse.show {
 }
 
 .page-link {
-    position: relative;
-    display: block;
-    padding: .5rem .75rem;
-    margin-left: -1px;
-    line-height: 1.25;
-    color: #007bff;
-    background-color: #fff;
-    border: 1px solid #ddd
+    background: #F6F7FB;
+	color: #666;
+	padding: 6px 18px;
+	font-weight: 400;
+	border: 1px solid #e1e1e1;
+	font-size: 16px;
+	border-radius: 0px;
 }
 
 .page-link:focus,
 .page-link:hover {
-    color: #0056b3;
-    text-decoration: none;
-    background-color: #e9ecef;
-    border-color: #ddd
+    background: #F7941D;
+	color: #fff;
+	border-color: transparent;
 }
 
 .pagination-lg .page-link {
@@ -8631,4 +8629,3 @@ a.text-dark:hover {
 }
 
 
-/*# sourceMappingURL=bootstrap.min.css.map */

@@ -64,6 +64,11 @@ class Product
      */
     private $quantity;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $promo;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
@@ -234,5 +239,17 @@ class Product
             $this->id,
             $this->name,
         ] = unserialize($serialized);
+    }
+
+    public function getPromo(): ?bool
+    {
+        return $this->promo;
+    }
+
+    public function setPromo(?bool $promo): self
+    {
+        $this->promo = $promo;
+
+        return $this;
     }
 }

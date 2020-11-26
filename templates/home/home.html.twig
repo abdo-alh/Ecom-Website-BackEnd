@@ -276,8 +276,8 @@
 									<a href="product-details.html">
 										<img class="default-img" src="https://via.placeholder.com/550x750" alt="#">
 										<img class="hover-img" src="https://via.placeholder.com/550x750" alt="#">
-										{% if product.price > 2400 %}
-											<span class="out-of-stock">Hot</span>
+										{% if product.promo %}
+											<span class="out-of-stock">Discount</span>
 										{% endif %}
 									</a>
 									<div class="button-head">

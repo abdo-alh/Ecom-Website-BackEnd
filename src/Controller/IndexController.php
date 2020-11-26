@@ -15,7 +15,7 @@ class IndexController extends AbstractController
     public function home(ProductRepository $productRepo,Request $request){
         $id = $request->query->get('id');
         return $this->render('home/home.html.twig',[
-            'products'=>$productRepo->findSomeProducts('subCategory','Laptops',4),
+            'products'=>$productRepo->findDiscountProduct(),
             'id'=>$id
         ]);
     }

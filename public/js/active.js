@@ -67,17 +67,19 @@ Version:1.0
 		  Slider Range JS
 		=========================*/
 		$(function () {
+			var min = $('#min');
+			var max = $('#max');
 			$("#slider-range").slider({
 				range: true,
-				min: 0,
-				max: 500,
-				values: [120, 250],
+				min: parseInt($("#slider-range").data('min')),
+				max: parseInt($("#slider-range").data('max')),
+				step: 10,
+				values: [min.val() || 0, max.val() || 3000],
 				slide: function (event, ui) {
-					$("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+					min.val(ui.values[0]);
+					max.val(ui.values[1]);
 				}
 			});
-			$("#amount").val("$" + $("#slider-range").slider("values", 0) +
-				" - $" + $("#slider-range").slider("values", 1));
 		});
 
 		/*=======================

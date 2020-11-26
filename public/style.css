@@ -2094,38 +2094,35 @@ Version:1.0
 	color: #222;
 	background: transparent;
 }
-.shop .range .check-box-list {
+.check-box-list {
 	margin-top: 15px;
 }
-.shop .range .check-box-list li {
+.check-box-list li {
 	margin-bottom: 5px;
 }
-.shop .range .check-box-list li:last-child{
+.check-box-list li:last-child{
 	margin:0;
 }
-.shop .range .check-box-list li label input {
+.check-box-list li label input {
 	display: inline-block;
 	margin-right: 6px;
 	position: relative;
 	top: 1px;
 }
-.shop .range .check-box-list li label {
+.check-box-list li label {
 	margin: 0;
 	font-size: 14px;
 	font-weight: 400;
 	color:#333;
 	cursor:pointer;
 }
-.shop .range .check-box-list .count{
+.check-box-list .count{
 	margin-left:5px;
 	color:#666;
 }
 /* Category List */
 .shop-sidebar .categor-list {
 	margin-top: 10px;
-}
-.shop-sidebar .categor-list li{
-	
 }
 .shop-sidebar .categor-list li {
 	margin-bottom: 10px;

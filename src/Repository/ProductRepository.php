@@ -57,7 +57,7 @@ class ProductRepository extends ServiceEntityRepository
     {
         $query = $this->getSearchQuery($search)->getQuery();
 
-        return $this->paginator->paginate($query, $search->page, 2);
+        return $this->paginator->paginate($query, $search->page, 10);
     }
 
     /**

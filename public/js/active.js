@@ -67,17 +67,20 @@ Version:1.0
 		  Slider Range JS
 		=========================*/
 		$(function () {
-			var min = $('#min');
-			var max = $('#max');
+			var min = document.getElementById("min");
+			var max = document.getElementById("max");
 			$("#slider-range").slider({
 				range: true,
 				min: parseInt($("#slider-range").data('min')),
 				max: parseInt($("#slider-range").data('max')),
 				step: 10,
-				values: [min.val() || 0, max.val() || 3000],
+				values: [min.value || 0, max.value || 3000],
 				slide: function (event, ui) {
-					min.val(ui.values[0]);
-					max.val(ui.values[1]);
+					min.value = ui.values[0];
+					max.value = ui.values[1];
+				},
+				stop: function(event, ui){
+					min.dispatchEvent(new Event("change"));
 				}
 			});
 		});
@@ -299,19 +302,52 @@ Version:1.0
 	/*=====================================
 	 Others JS
 	======================================*/
-	$(function () {
-		$("#slider-range").slider({
-			range: true,
-			min: 0,
-			max: 500,
-			values: [0, 500],
-			slide: function (event, ui) {
-				$("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+
+	var pagination = document.querySelector('.js-filter-pagination')
+	var content = document.querySelector('.js-filter-content')
+	var sorting = document.querySelector('.js-filter-sorting')
+	var form = document.querySelector('.js-filter-form')
+
+	const aClickListener = e => {
+		if (e.target.tagName === 'A') {
+			e.preventDefault()
+			loadUrl(e.target.getAttribute('href'))
+		}
+	}
+
+	sorting.addEventListener('click', aClickListener)
+	pagination.addEventListener('click', aClickListener)
+	form.querySelectorAll('input').forEach(input => {
+		input.addEventListener('change', loadForm.bind(this))
+	})
+
+	async function loadForm() {
+		const data = new FormData(form)
+		const url = new URL(form.getAttribute('action') || window.location.href)
+		const params = new URLSearchParams()
+		data.forEach((value, key) => {
+			params.append(key, value)
+		})
+		return loadUrl(url.pathname + '?' + params.toString())
+	}
+
+	async function loadUrl(url, append = false) {
+		const params = new URLSearchParams(url.split('?')[1] || '')
+		params.set('ajax', 1)
+		const response = await fetch(url.split('?')[0] + '?' + params.toString(), {
+			headers: {
+				'X-Requested-With': 'XMLHttpRequest'
 			}
-		});
-		$("#amount").val("$" + $("#slider-range").slider("values", 0) +
-			" - $" + $("#slider-range").slider("values", 1));
-	});
+		})
+		if (response.status >= 200 && response.status < 300) {
+			const data = await response.json()
+			content.innerHTML = data.content
+			sorting.innerHTML = data.sorting
+			pagination.innerHTML = data.pagination
+		} else {
+			console.error(response)
+		}
+	}
 
 	/*=====================================
 	  Preloader JS

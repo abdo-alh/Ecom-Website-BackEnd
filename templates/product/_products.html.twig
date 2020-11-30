@@ -9,7 +9,7 @@
 				</a>
 				<div class="button-head">
 					<div class="product-action">
-						<a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#">
+						<a class="quick-shop" data-toggle="modal" data-target="#exampleModal" data-url="{{ path('productModal',{'id':product.id}) }}" title="Quick View" href="javascript:void(0);">
 							<i class=" ti-eye"></i>
 							<span>Quick Shop</span>
 						</a>
@@ -23,7 +23,7 @@
 						</a>
 					</div>
 					<div class="product-action-2">
-						<a title="Add to cart" href="#">Add to cart</a>
+						<a class="cart_add" title="Add to cart" data-url="{{ path('cart_add',{'id':product.id}) }}">Add to cart</a>
 					</div>
 				</div>
 			</div>

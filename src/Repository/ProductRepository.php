@@ -31,7 +31,6 @@ class ProductRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('p')
             ->join('p.' . $field, 'c')
             ->where('c.name = :value')
-            ->groupBy('c')
             ->setParameter('value', $value)
             ->setMaxResults($n)
             ->getQuery()

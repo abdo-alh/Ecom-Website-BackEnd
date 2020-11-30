@@ -146,8 +146,8 @@
                     $('.total-count').html(count);
 
                 })
-                .fail(function () {
-                    console.log(data);
+                .fail(function (error) {
+                    console.log(error);
                     $('.shopping-item').html('<i class="glyphicon glyphicon-info-sign"></i> Something went wrong, Please try again...');
                 });
 

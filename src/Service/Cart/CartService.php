@@ -59,7 +59,7 @@ class CartService
         $serializer = new Serializer([$normalizer], [$encoder]);
 
         foreach ($panier as $id => $quantity) {
-            $product = $serializer->serialize($this->productRepository->find($id), 'json', [AbstractNormalizer::IGNORED_ATTRIBUTES => ['category', 'subCategory','createdAt','location']]);
+            $product = $serializer->serialize($this->productRepository->find($id), 'json', [AbstractNormalizer::IGNORED_ATTRIBUTES => ['category', 'subCategory','createdAt','location','reviews']]);
             $panierWithData[] = [
                 'product' => $product,
                 'quantity' => $quantity

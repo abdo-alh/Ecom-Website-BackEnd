@@ -69,20 +69,22 @@ Version:1.0
 		$(function () {
 			var min = document.getElementById("min");
 			var max = document.getElementById("max");
-			$("#slider-range").slider({
-				range: true,
-				min: parseInt($("#slider-range").data('min')),
-				max: parseInt($("#slider-range").data('max')),
-				step: 10,
-				values: [min.value || 0, max.value || 3000],
-				slide: function (event, ui) {
-					min.value = ui.values[0];
-					max.value = ui.values[1];
-				},
-				stop: function(event, ui){
-					min.dispatchEvent(new Event("change"));
-				}
-			});
+			if (min || max) {
+				$("#slider-range").slider({
+					range: true,
+					min: parseInt($("#slider-range").data('min')),
+					max: parseInt($("#slider-range").data('max')),
+					step: 10,
+					values: [min.value || 0, max.value || 3000],
+					slide: function (event, ui) {
+						min.value = ui.values[0];
+						max.value = ui.values[1];
+					},
+					stop: function (event, ui) {
+						min.dispatchEvent(new Event("change"));
+					}
+				});
+			}
 		});
 
 		/*=======================
@@ -297,7 +299,7 @@ Version:1.0
 	/*====================================
 	18. Nice Select JS
 	======================================*/
-	//$('select').niceSelect();
+	$('select').niceSelect();
 
 	/*=====================================
 	 Others JS
@@ -315,11 +317,13 @@ Version:1.0
 		}
 	}
 
-	sorting.addEventListener('click', aClickListener)
-	pagination.addEventListener('click', aClickListener)
-	form.querySelectorAll('input').forEach(input => {
-		input.addEventListener('change', loadForm.bind(this))
-	})
+	if (sorting && pagination && form && content) {
+		sorting.addEventListener('click', aClickListener)
+		pagination.addEventListener('click', aClickListener)
+		form.querySelectorAll('input').forEach(input => {
+			input.addEventListener('change', loadForm.bind(this))
+		})
+	}
 
 	async function loadForm() {
 		const data = new FormData(form)

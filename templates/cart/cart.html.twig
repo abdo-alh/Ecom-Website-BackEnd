@@ -65,15 +65,15 @@
 									<td
 										class="qty" data-title="Qty">
 										<!-- Input Order -->
-										<div class="input-group">
+										<div class="input-group" >
 											<div class="button minus">
-												<button type="button" class="btn btn-primary btn-number" data-type="minus" data-id="{{ loop.index }}" data-field="quant[{{ loop.index }}]">
+												<button type="button" class="btn btn-primary btn-number" data-type="minus" data-product-id="{{ item.product.id }}" data-id="{{ loop.index }}" data-field="quant[{{ loop.index }}]">
 													<i class="ti-minus"></i>
 												</button>
 											</div>
-											<input type="text" name="quant[{{ loop.index }}]" class="input-number"  data-min="1" data-max="100" value="{{ item.quantity }}">
+											<input type="text" name="quant[{{ loop.index }}]" class="input-number" data-min="1" data-max="100" value="{{ item.quantity }}">
 											<div class="button plus">
-												<button type="button" class="btn btn-primary btn-number" data-type="plus" data-id="{{ loop.index }}" data-field="quant[{{ loop.index }}]">
+												<button type="button" class="btn btn-primary btn-number" data-type="plus" data-product-id="{{ item.product.id }}" data-id="{{ loop.index }}" data-field="quant[{{ loop.index }}]">
 													<i class="ti-plus"></i>
 												</button>
 											</div>
@@ -84,7 +84,7 @@
 										$<span id="total-{{ loop.index }}" class="total">{{ item.product.price * item.quantity }}</span>
 									</td>
 									<td class="action" data-title="Remove">
-										<a href="#" class="remove" data-id="{{ loop.index }}"  data-url="{{ path('cart_remove',{'id': item.product.id}) }}">
+										<a href="#" class="remove" data-id="{{ loop.index }}" data-url="{{ path('cart_remove',{'id': item.product.id}) }}">
 											<i class="ti-trash remove-icon"></i>
 										</a>
 									</td>
@@ -119,16 +119,18 @@
 							<div class="col-lg-4 col-md-7 col-12">
 								<div class="right">
 									<ul>
-										<li>Cart Subtotal<span>$</span><span class="subtotal">{{ total }}</span>
+										<li>Cart Subtotal<span>$</span>
+											<span class="subtotal">{{ total }}</span>
 										</li>
 										<li>Shipping<span class="shipping">Free</span>
 										</li>
-										<li class="last">You Pay<span>$</span><span class="total">{{ total }}</span>
+										<li class="last">You Pay<span>$</span>
+											<span class="total">{{ total }}</span>
 										</li>
 									</ul>
 									<div class="button5">
-										<a href="#" class="btn">Checkout</a>
-										<a href="#" class="btn">Continue shopping</a>
+										<a href="{{ path('checkout') }}" class="btn">Checkout</a>
+										<a href="{{ path('shop') }}" class="btn">Continue shopping</a>
 									</div>
 								</div>
 							</div>

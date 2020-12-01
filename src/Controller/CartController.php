@@ -38,13 +38,25 @@ class CartController extends AbstractController
     }
 
     /**
+     * @Route("/cart/minus/{id}", name="cart_minus")
+     */
+    public function minus($id, CartService $cartService)
+    {
+        $cartService->minus($id);
+        $items = $cartService->getFullCart();
+
+        return new JsonResponse($items,200,[],false);
+    }
+
+    /**
      * @Route("/cart/ajax", name="cart_ajax")
      */
     public function display(CartService $cartService)
     {
-        $items = $cartService->getFullCart();
+        $items = $cartService->getFullCartWithoutSerialize();
+        $total = $cartService->getTotal();
 
-        return new JsonResponse($items,200,[],false);
+        return new JsonResponse(['display'=>$this->renderView("home/shopping-item.html.twig",['items'=>$items,'total'=>$total])]);
     }
 
     /**

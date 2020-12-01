@@ -1,0 +1,38 @@
+<a href="#" class="single-icon">
+	<i class="ti-bag"></i>
+	<span class="total-count">{{ items|length }}</span>
+</a>
+<!-- Shopping Item -->
+<div class="shopping-item">
+	<div class="dropdown-cart-header">
+		<span class="total-count"></span>
+		Items
+		<a href="{{ path('cart_index') }}">View Cart</a>
+	</div>
+	<ul class="shopping-list">
+		{% for item in items %}
+			<li>
+				<a class="remove" title="remove this item" href="javascript:void(0);">
+					<i class="fa fa-remove"></i>
+				</a>
+				<a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#"></a>
+				<h4>
+					<a href="#">{{ item.product.name }}</a>
+				</h4>
+				<p class="quantity">{{ item.quantity }}x -
+					<span class="amount">${{ item.product.price }}</span>
+				</p>
+			</li>
+		{% else %}
+            <li>Your Cart is Empty !!</li>
+		{% endfor %}
+	</ul>
+	<div class="bottom">
+		<div class="total">
+			<span>Total</span>
+			<span class="total-amount">${{ total }}</span>
+		</div>
+		<a href="{{ path('checkout') }}" class="btn animate">Checkout</a>
+	</div>
+</div>
+<!--/ End Shopping Item -->

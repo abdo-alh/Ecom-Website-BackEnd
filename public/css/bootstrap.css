@@ -2129,14 +2129,12 @@ select.form-control-lg:not([size]):not([multiple]) {
 }
 
 .form-check-label {
-    padding-left: 1.25rem;
     margin-bottom: 0
 }
 
 .form-check-input {
     position: absolute;
     margin-top: .25rem;
-    margin-left: -1.25rem
 }
 
 .form-check-inline {

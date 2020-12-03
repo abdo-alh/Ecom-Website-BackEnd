@@ -59,13 +59,13 @@
 										<p class="product-des">{{ item.product.description }}</p>
 									</td>
 									<td class="price" data-title="Price">
-										<span id="unit-{{ loop.index }}" class="unit-price" data-unit="{{ item.product.price }}">${{ item.product.price }}
+										<span id="unit-{{ loop.index }}" class="unit-price" data-unit="{{ item.product.price }}">${{ item.product.price|number_format(0, '.') }}
 										</span>
 									</td>
 									<td
 										class="qty" data-title="Qty">
 										<!-- Input Order -->
-										<div class="input-group" >
+										<div class="input-group">
 											<div class="button minus">
 												<button type="button" class="btn btn-primary btn-number" data-type="minus" data-product-id="{{ item.product.id }}" data-id="{{ loop.index }}" data-field="quant[{{ loop.index }}]">
 													<i class="ti-minus"></i>
@@ -87,6 +87,12 @@
 										<a href="#" class="remove" data-id="{{ loop.index }}" data-url="{{ path('cart_remove',{'id': item.product.id}) }}">
 											<i class="ti-trash remove-icon"></i>
 										</a>
+									</td>
+								</tr>
+							{% else %}
+								<tr>
+									<td>
+										<h3>Your Cart is Empty !</h3>
 									</td>
 								</tr>
 							{% endfor %}
@@ -119,13 +125,20 @@
 							<div class="col-lg-4 col-md-7 col-12">
 								<div class="right">
 									<ul>
-										<li>Cart Subtotal<span>$</span>
-											<span class="subtotal">{{ total }}</span>
+										<li>Cart Subtotal
+											<span class="subtotal">{{ total|format_currency('USD') }}</span>
 										</li>
-										<li>Shipping<span class="shipping">Free</span>
+										<li>Shipping
+											<span class="shipping">
+												{% if shipPrice > 0 %}
+													{{ shipPrice|format_currency('USD') }}
+												{% else %}
+													Free
+												{% endif %}
+											</span>
 										</li>
-										<li class="last">You Pay<span>$</span>
-											<span class="total">{{ total }}</span>
+										<li class="last">You Pay
+											<span class="total">{{ total|format_currency('USD') }}</span>
 										</li>
 									</ul>
 									<div class="button5">

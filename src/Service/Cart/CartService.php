@@ -106,8 +106,31 @@ class CartService
         return $panierWithData;
     }
 
-    public function getTotal()
+    public function getCount()
     {
+        $count = 0;
+
+        foreach ($this->getFullCartWithoutSerialize() as $value) {
+            $count += $value['quantity'];
+        }
+
+        return $count;
+    }
+
+    public function getShipPrice():float
+    {
+        if(!empty($this->getFullCartWithoutSerialize()) && $this->getCount()>0){
+            if($this->getCount()==1){
+                return 20.00;
+            }else{
+                return 0.00;
+            }
+        }else{
+            return 0.00;
+        }
+    }
+
+    public function getSubTotal(){
         $total = 0;
 
         foreach ($this->getFullCartWithoutSerialize() as $value) {
@@ -115,5 +138,10 @@ class CartService
         }
 
         return $total;
+    }
+
+    public function getTotal()
+    {
+        return $this->getSubTotal() + $this->getShipPrice();
     }
 }

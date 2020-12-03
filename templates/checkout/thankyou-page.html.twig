@@ -1,6 +1,6 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Checkout Page!
+{% block title %}Thank You !
 {% endblock %}
 
 {% block body %}
@@ -19,7 +19,7 @@
 								</a>
 							</li>
 							<li class="active">
-								<a href="blog-single.html">Checkout</a>
+								<a href="blog-single.html">Thank You</a>
 							</li>
 						</ul>
 					</div>
@@ -37,76 +37,68 @@
 					<div class="checkout-form">
 						<h2>Make Your Checkout Here</h2>
 						<p>Please register in order to checkout more quickly</p>
-						<!-- Form -->
-						{{ form_start(checkoutForm,{'attr':{'class':'form'}}) }}
 						<div class="row">
 							<div class="col-lg-6 col-md-6 col-12">
 								<div class="form-group">
-									<label>First Name<span>*</span>
+									<label>First Name
 									</label>
-									{{ form_row(checkoutForm.firstName) }}
+									{{ order.firstName }}
 								</div>
 							</div>
 							<div class="col-lg-6 col-md-6 col-12">
 								<div class="form-group">
-									<label>Last Name<span>*</span>
+									<label>Last Name
 									</label>
-									{{ form_row(checkoutForm.lastName) }}
+									{{ order.lastName }}
 								</div>
 							</div>
 							<div class="col-lg-6 col-md-6 col-12">
 								<div class="form-group">
-									<label>Email Address<span>*</span>
+									<label>Email Address
 									</label>
-									{{ form_row(checkoutForm.email) }}
+									{{ order.email }}
 								</div>
 							</div>
 							<div class="col-lg-6 col-md-6 col-12">
 								<div class="form-group">
-									<label>Phone Number<span>*</span>
+									<label>Phone Number
 									</label>
-									{{ form_row(checkoutForm.phone) }}
+									{{ order.phone }}
 								</div>
 							</div>
 							<div class="col-lg-6 col-md-6 col-12">
 								<div class="form-group">
-									<label>Country<span>*</span>
+									<label>Country
 									</label>
-									{{ form_row(checkoutForm.country) }}
+									{{ order.country.name }}
 								</div>
 							</div>
 							<div class="col-lg-6 col-md-6 col-12">
 								<div class="form-group">
-									<label>City<span>*</span>
+									<label>City
 									</label>
-									{{ form_row(checkoutForm.city) }}
+									{{ order.city.name }}
 								</div>
 							</div>
 							<div class="col-lg-6 col-md-6 col-12">
 								<div class="form-group">
-									<label>Address Line 1<span>*</span>
+									<label>Address Line 1
 									</label>
-									{{ form_row(checkoutForm.firstAdress) }}
+									{{ order.firstAdress }}
 								</div>
 							</div>
 							<div class="col-lg-6 col-md-6 col-12">
 								<div class="form-group">
-									<label>Address Line 2<span>*</span>
+									<label>Address Line 2
 									</label>
-									{{ form_row(checkoutForm.secondAdress) }}
+									{{ order.secondAdress }}
 								</div>
 							</div>
 							<div class="col-lg-6 col-md-6 col-12">
 								<div class="form-group">
-									<label>Postal Code<span>*</span>
+									<label>Postal Code
 									</label>
-									{{ form_row(checkoutForm.postalCode) }}
-								</div>
-							</div>
-							<div class="col-12">
-								<div class="form-group create-account">
-									<input id="cbox" type="checkbox">
-									<label>Create an account?</label>
+									{{ order.postalCode }}
 								</div>
 							</div>
 						</div>
@@ -118,55 +110,24 @@
 						class="order-details">
 						<!-- Order Widget -->
 						<div class="single-widget">
-							<h2>CART  TOTALS</h2>
+							<h2>AMOUNT TOTAL</h2>
 							<div class="content">
 								<ul>
-									<li>Sub Total<span>${{ subTotal }}</span>
-									</li>
-									<li>(+) Shipping
-										<span>
-											{% if shipPrice > 0 %}
-											    ${{ shipPrice }}
-											{% else %}
-											    Free
-											{% endif %}
-										</span>
-									</li>
-									<li class="last">Total<span>${{ total }}</span>
+									<li class="last">Total<span>${{ order.orderTotal }}</span>
 									</li>
 								</ul>
 							</div>
 						</div>
 						<!--/ End Order Widget -->
-						<!-- Order Widget -->
-						<div class="single-widget">
-							<h2>Payments</h2>
-							<div class="content">
-								<div class="checkbox">
-									<div class="form-group">
-										{{ form_row(checkoutForm.payment_method) }}
-									</div>
-								</div>
-							</div>
-						</div>
-						<!--/ End Order Widget -->
-						<!-- Payment Method Widget -->
-						<div class="single-widget payement">
-							<div class="content">
-								<img src="images/payment-method.png" alt="#">
-							</div>
-						</div>
-						<!--/ End Payment Method Widget -->
 						<!-- Button Widget -->
 						<div class="single-widget get-button">
 							<div class="content">
 								<div class="button">
-									<button type="submit" class="btn">proceed to checkout</button>
+									<a href="{{ path('home') }}" class="btn">Back To Home</a>
 								</div>
 							</div>
 						</div>
 						<!--/ End Button Widget -->
-						{{ form_end(checkoutForm) }}
 					</div>
 				</div>
 			</div>

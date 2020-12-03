@@ -22,19 +22,24 @@ class CartController extends AbstractController
     {
         return $this->render('cart/cart.html.twig', [
             'items' => $cartService->getFullCartWithoutSerialize(),
-            'total' => $cartService->getTotal()
+            'total' => $cartService->getTotal(),
+            'shipPrice' => $cartService->getShipPrice()
         ]);
     }
 
     /**
      * @Route("/cart/add/{id}", name="cart_add")
      */
-    public function add($id, CartService $cartService,ProductRepository $productRepository)
+    public function add($id, CartService $cartService)
     {
         $cartService->add($id);
-        $items = $cartService->getFullCart();
+        $items = $cartService->getFullCartWithoutSerialize();
+        $subTotal = $cartService->getSubTotal();
+        $total = $cartService->getTotal();
+        $count = $cartService->getCount();
+        $shipPrice = $cartService->getShipPrice();
 
-        return new JsonResponse($items,200,[],false);
+        return new JsonResponse(['display' => $this->renderView("home/shopping-item.html.twig", ['items' => $items, 'subTotal' => $subTotal, 'total' => $total, 'shipPrice' => $shipPrice, 'count' => $count])]);
     }
 
     /**
@@ -43,9 +48,11 @@ class CartController extends AbstractController
     public function minus($id, CartService $cartService)
     {
         $cartService->minus($id);
-        $items = $cartService->getFullCart();
+        $items = $cartService->getFullCartWithoutSerialize();
+        $total = $cartService->getTotal();
+        $count = $cartService->getCount();
 
-        return new JsonResponse($items,200,[],false);
+        return new JsonResponse(['display' => $this->renderView("home/shopping-item.html.twig", ['items' => $items, 'total' => $total, 'count' => $count])]);
     }
 
     /**
@@ -54,9 +61,12 @@ class CartController extends AbstractController
     public function display(CartService $cartService)
     {
         $items = $cartService->getFullCartWithoutSerialize();
+        $subTotal = $cartService->getSubTotal();
         $total = $cartService->getTotal();
+        $count = $cartService->getCount();
+        $shipPrice = $cartService->getShipPrice();
 
-        return new JsonResponse(['display'=>$this->renderView("home/shopping-item.html.twig",['items'=>$items,'total'=>$total])]);
+        return new JsonResponse(['display' => $this->renderView("home/shopping-item.html.twig", ['items' => $items, 'subTotal' => $subTotal, 'total' => $total, 'shipPrice' => $shipPrice, 'count' => $count])]);
     }
 
     /**

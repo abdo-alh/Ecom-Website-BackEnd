@@ -1,11 +1,11 @@
 <a href="#" class="single-icon">
 	<i class="ti-bag"></i>
-	<span class="total-count">{{ items|length }}</span>
+	<span class="total-count">{{ count }}</span>
 </a>
 <!-- Shopping Item -->
 <div class="shopping-item">
 	<div class="dropdown-cart-header">
-		<span class="total-count"></span>
+		<span class="total-count">{{ count }}</span>
 		Items
 		<a href="{{ path('cart_index') }}">View Cart</a>
 	</div>
@@ -24,10 +24,20 @@
 				</p>
 			</li>
 		{% else %}
-            <li>Your Cart is Empty !!</li>
+			<li>Your Cart is Empty !!</li>
 		{% endfor %}
 	</ul>
 	<div class="bottom">
+		<div class="shipping">
+			<span>Shipping</span>
+			<span class="total-shipping">
+				{% if shipPrice > 0 %}
+					${{ shipPrice }}
+				{% else %}
+					Free
+				{% endif %}
+			</span>
+		</div>
 		<div class="total">
 			<span>Total</span>
 			<span class="total-amount">${{ total }}</span>

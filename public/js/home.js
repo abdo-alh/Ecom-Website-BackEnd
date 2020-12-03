@@ -2,17 +2,19 @@
     "use strict";
     $(document).on('ready', function () {
 
-        $.ajax({
-            url: "http://localhost:8000/cart/ajax",
-            type: 'GET',
-            dataType: 'json'
-        })
-            .done(function (data) {
-                $('.shopping').html(data.display);
+        $(function () {
+            $.ajax({
+                url: "http://localhost:8000/cart/ajax",
+                type: 'GET',
+                dataType: 'json'
             })
-            .fail(function (error) {
-                console.log(error);
-            });
+                .done(function (data) {
+                    $('.shopping').html(data.display);
+                })
+                .fail(function (error) {
+                    console.log(error);
+                });
+        });
 
         $(document).on('click', '.quick-shop', function (e) {
 
@@ -56,6 +58,7 @@
                     type: 'DELETE'
                 })
                     .done(function (data) {
+                        //der lparent
                         trCart.remove();
                         liCart.remove();
                         subTotal.html(data);
@@ -82,23 +85,10 @@
                 dataType: 'json'
             })
                 .done(function (data) {
-                    let html = '';
-                    let count = 0;
-                    let total = 0;
-                    for (let i = 0; i < data.length; i++) {
-                        let product = JSON.parse(data[i].product);
-                        html += '<li id="li-' + (i + 1) + '"><a class="remove" title="remove this item" href="javascript:void(0);"><i class="fa fa-remove"></i></a><a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#"></a><h4><a href="#">' + product.name + '</a></h4><p class="quantity">' + data[i].quantity + 'x -<span class="amount">' + product.price + '$</span></p></li>';
-                        $('.shopping-list').html(html);
-                        total += product.price * data[i].quantity;
-                        count += data[i].quantity;
-                    }
-                    $('.total .total-amount').html('$' + total);
-                    $('.total-count').html(count);
-
+                    $('.shopping').html(data.display);
                 })
                 .fail(function (error) {
                     console.log(error);
-                    $('.shopping-item').html('<i class="glyphicon glyphicon-info-sign"></i> Something went wrong, Please try again...');
                 });
 
         });
@@ -124,17 +114,6 @@
                         totalPrice.html(unitPrice.data('unit') * input.val());
                         subTotal.html(parseInt(subTotal.html()) - unitPrice.data('unit'));
                         total.html(subTotal.html());
-                        $.ajax({
-                            url: "http://localhost:8000/cart/ajax",
-                            type: 'GET',
-                            dataType: 'json'
-                        })
-                            .done(function (data) {
-                                $('.shopping').html(data.display);
-                            })
-                            .fail(function (error) {
-                                console.log(error);
-                            });
                     }
                     if (parseInt(input.val()) == input.attr('data-min')) {
                         $(this).attr('disabled', true);
@@ -147,17 +126,6 @@
                         totalPrice.html(unitPrice.data('unit') * input.val());
                         subTotal.html(parseInt(subTotal.html()) + unitPrice.data('unit'));
                         total.html(subTotal.html());
-                        $.ajax({
-                            url: "http://localhost:8000/cart/ajax",
-                            type: 'GET',
-                            dataType: 'json'
-                        })
-                            .done(function (data) {
-                                $('.shopping').html(data.display);
-                            })
-                            .fail(function (error) {
-                                console.log(error);
-                            });
                     }
                     if (parseInt(input.val()) == input.attr('data-max')) {
                         $(this).attr('disabled', true);
@@ -167,7 +135,7 @@
             } else {
                 input.val(0);
             }
-        }); 
+        });
         $('.input-number').change(function () {
 
             var minValue = parseInt($(this).attr('data-min'));
@@ -195,20 +163,6 @@
             // Ensure that it is a number and stop the keypress
             if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
                 e.preventDefault();
-            }
-        });
-        $('#ship').on('change', function (e) {
-            e.preventDefault();
-            var freeShipping = $('.shipping');
-            var subTotal = $('.subtotal');
-            var total = $('.last .total');
-
-            if (this.checked === true) {
-                freeShipping.html('10$');
-                total.html(parseInt(subTotal.html()) + 10);
-            } else {
-                freeShipping.html('Free');
-                total.html(parseInt(subTotal.html()));
             }
         });
 

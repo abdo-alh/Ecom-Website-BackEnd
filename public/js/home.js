@@ -22,7 +22,7 @@
 
             var url = $(this).data('url');
 
-            $('#dynamic-content').html(''); // leave it blank before ajax call
+            $('.modal-body').html(''); // leave it blank before ajax call
 
             $.ajax({
                 url: url,
@@ -30,13 +30,12 @@
                 dataType: 'html'
             })
                 .done(function (data) {
-                    console.log(data);
-                    $('#dynamic-content').html('');
-                    $('#dynamic-content').html(data); // load response  
+                    $('.modal-body').html('');
+                    $('.modal-body').html(data); // load response  
                 })
                 .fail(function () {
                     console.log(data);
-                    $('#dynamic-content').html('<i class="glyphicon glyphicon-info-sign"></i> Something went wrong, Please try again...');
+                    $('.modal-body').html('<i class="glyphicon glyphicon-info-sign"></i> Something went wrong, Please try again...');
                 });
 
         });
@@ -47,6 +46,7 @@
             if (confirm("Are you sure?")) {
                 var url = $(this).data('url');
                 var id = $(this).attr('data-id');
+                var input = $('#input-'+id);
                 var trCart = $('#tr-' + id);
                 var liCart = $('#li-' + id);
                 var subTotal = $('.subtotal');
@@ -64,7 +64,7 @@
                         subTotal.html(data);
                         total.html(subTotal.html());
                         totalAmount.html('$' + subTotal.html());
-                        $('.shopping .total-count').html($('.shopping .total-count').html() - 1);
+                        $('.shopping .total-count').html(parseInt($('.shopping .total-count').html()) - input.val());
                     })
                     .fail(function (error) {
                         console.log(error);

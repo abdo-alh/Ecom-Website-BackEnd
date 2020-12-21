@@ -21,31 +21,31 @@ class CheckoutController extends AbstractController
     public function index(CartService $cartService, Request $request, SessionInterface $session): Response
     {
         if (empty($cartService->getFullCart())) {
+            $this->addFlash("info","Your Cart is Empty Please Add Some Products To Your Cart !");
             return $this->redirectToRoute("shop");
         }
         $order = new Order();
         $form = $this->createForm(OrderFormType::class, $order);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($request->get('payment_method') == "cod") {
-                $order->setPaymentStatus("Unpaid");
-            } elseif ($request->get('payment_method') == "paypal") {
-                $order->setPaymentStatus("Paid");
+            if ($order->getPaymentMethod() == "cod") {
+                $order->setPaymentStatus("unpaid");
+            } elseif ($order->getPaymentMethod() == "paypal") {
+                $order->setPaymentStatus("paid");
             }
             $order->setOrderTotal($cartService->getTotal());
-            $order->setPaymentMethod($request->get('payment_method'));
             $order->setReference('REF-' . strtoupper(str_shuffle("ABCDEFGHIGKLM")));
             $order->setDateOrder(new \DateTime('now'));
             $em = $this->getDoctrine()->getManager();
             $em->persist($order);
             $em->flush();
 
-            if ($request->get('payment_method') == "cod") {
+            if ($order->getPaymentMethod() == "cod") {
                 $session->set('panier', []);
                 return $this->render('checkout/thankyou-page.html.twig', [
                     'order' => $order
                 ]);
-            } elseif ($request->get('payment_method') == "paypal") {
+            } elseif ($order->getPaymentMethod() == "paypal") {
                 return $this->redirectToRoute('paypal');
             }
         }

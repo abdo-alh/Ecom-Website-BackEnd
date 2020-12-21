@@ -71,7 +71,7 @@
 													<i class="ti-minus"></i>
 												</button>
 											</div>
-											<input type="text" name="quant[{{ loop.index }}]" class="input-number" data-min="1" data-max="100" value="{{ item.quantity }}">
+											<input type="text" id="input-{{ loop.index }}" name="quant[{{ loop.index }}]" class="input-number" data-min="1" data-max="100" value="{{ item.quantity }}">
 											<div class="button plus">
 												<button type="button" class="btn btn-primary btn-number" data-type="plus" data-product-id="{{ item.product.id }}" data-id="{{ loop.index }}" data-field="quant[{{ loop.index }}]">
 													<i class="ti-plus"></i>

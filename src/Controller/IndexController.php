@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,9 +14,10 @@ class IndexController extends AbstractController
     /**
      * @Route("/",name="home")
      */
-    public function home(ProductRepository $productRepo,Request $request){
+    public function home(CategoryRepository $categoryRepository,ProductRepository $productRepo,Request $request){
         $id = $request->query->get('id');
         return $this->render('home/home.html.twig',[
+            'categories'=>$categoryRepository->findAll(),
             'products'=>$productRepo->findDiscountProduct(),
             'id'=>$id
         ]);
